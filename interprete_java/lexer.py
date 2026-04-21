@@ -1,61 +1,38 @@
 from sly import Lexer
 
-class JavaLexer(Lexer):
-
-    # Tokens de la gramática
-    tokens = { 
-        INT, BOOLEAN, STRING, # Variables
-        IF, ELSE, WHILE, RETURN, # Control de flujo
-        TRUE, FALSE, NULL, # Valores booleanos y nulos
-        EQ, NEQ, LE, GE, LT, GR, # Operadores de comparación
-        AND, OR, NOT, # Operadores lógicos
-        PLUS, MINUS, MULT, DIVIDE, # Operadores aritméticos
-        ASSIGN, SEMICOLON, COMMA, LPAREN, RPAREN, LBRACE, RBRACE, # Símbolos
+class JavaLiteLexer(Lexer):
+    tokens = {
+        INT, PRINT, IDENT, NUMBER,
+        PLUS, MINUS, MULT, DIV, ASSIGN,
     }
 
-    # Variables
-    INT = r'\d+'
-    BOOLEAN = r'boolean'
-    STRING = r'"([^"\\]|\\.)*"'
 
-    # Control de flujo
-    IF = r'if'
-    ELSE = r'else'
-    WHILE = r'while'
-    RETURN = r'return'
+    ignore = ' \t'
+    ignore_comment = r'//.*'
+    ignore_multiline = r'/\*[\s\S]*?\*/'
 
-    # Operadores de comparación
-    EQ = r'=='
-    NEQ = r'!='
-    LE = r'<='
-    GE = r'>='
-    LT = r'<'
-    GR = r'>'
 
-    # Booleanos y nulos
-    TRUE = r'true'
-    FALSE = r'false'
-    NULL = r'null'
-
-    # Aritmética
+    # Operadores
     PLUS = r'\+'
     MINUS = r'-'
     MULT = r'\*'
-    DIVIDE = r'/'
-
-    # Operadores lógicos
-    AND = r'&&'
-    OR = r'\|\|'
-    NOT = r'!'
-    PLUS = r'\+'
-
-    # Símbolos
+    DIV = r'/'
     ASSIGN = r'='
-    SEMICOLON = r';'
-    COMMA = r','
-    LPAREN = r'\('
-    RPAREN = r'\)'
-    LBRACE = r'\{'
-    RBRACE = r'\}'
-   
-    ignore = ' \t\n' # Ignorar espacios, tabulaciones y saltos de línea
+
+    # Otros símbolos
+    literals = { '(', ')', '{', '}', ';' }
+
+    IDENT = r'[a-zA-Z_][a-zA-Z0-9_]*'
+    IDENT['int'] = INT
+    IDENT['print'] = PRINT
+
+
+
+    @_(r'\d+')
+    def NUMBER(self, t):
+        t.value = int(t.value)
+        return t
+
+    @_(r'\n+')
+    def newline(self, t):
+        self.lineno += len(t.value)
