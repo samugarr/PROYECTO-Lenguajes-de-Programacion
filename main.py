@@ -1,10 +1,7 @@
-# & C:\Users\samug\AppData\Local\Programs\Python\Python312\python.exe c:/Users/samug/Desktop/Uni/cuarto/segundo_cuatri/lenguajes_programacion/proyecto_lenguajes_programacion/PROYECTO-Lenguajes-de-Programacion/interprete_java/main.py .\java.txt
-
-
 import sys
-from lexer import JavaLiteLexer
-from parser import JavaLiteParser
-from interprete import Interpreter, print_ast
+from interprete_java.lexer import JavaLiteLexer
+from interprete_java.parser import JavaLiteParser
+from interprete_java.interprete import Interpreter, print_ast
 
 def main():
     if len(sys.argv) < 2:
@@ -12,10 +9,7 @@ def main():
         return
 
     filename = sys.argv[1]
-    show_ast = False
-
-    if len(sys.argv) == 3 and sys.argv[2] == "--ast":
-        show_ast = True
+    show_ast = '--ast' in sys.argv
 
     try:
         with open(filename, 'r') as f:
@@ -33,7 +27,7 @@ def main():
         print("\nÁRBOL AST DEL PROGRAMA:\n")
         for stmt in ast[1]:
             print_ast(stmt)
-        print("\n")
+        print()
 
     interpreter = Interpreter()
     interpreter.run(ast[1])

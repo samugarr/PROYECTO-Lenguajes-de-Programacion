@@ -1,0 +1,31 @@
+/* Programa complejo: combina operaciones, negativos y condicionales */
+
+int base = 8;
+int altura = -3;
+
+// Valor absoluto manual de altura
+if (altura < 0) {
+    altura = -altura;
+}
+print(altura);
+
+// Area
+int area = base * altura;
+print(area);
+
+// Comparar area con un umbral
+int umbral = 30;
+if (area >= umbral) {
+    print(1);
+} else {
+    print(0);
+}
+
+// Operacion con resultado negativo
+int resultado = 5 - 20;
+print(resultado);
+
+if (resultado < 0) {
+    resultado = -resultado;
+}
+print(resultado);

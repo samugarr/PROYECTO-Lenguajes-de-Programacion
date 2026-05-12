@@ -1,108 +1,157 @@
-# PROYECTO - Lenguajes de Programación | Intérprete Java Reducido
+# PROYECTO — Intérprete Java Reducido
 
-## Cosas que se pueden hacer
-
-### Declaración de variables
-
-**Sintaxis:**
-```text
-<tipo> <id> = <asignación> ;
-```
-
-**Ejemplo:**
-```java
-int x = 5;
-```
-
-### Display de información por consola
-
-**Sintaxis:**
-```text
-<print>(<variable>);
-```
-
-**Ejemplos:**
-```java
-print(x);
-print(10);
-```
-
-### Comentarios
-
-#### Comentarios de una línea
-
-```java
-// <comentario>
-// Esto es un ejemplo de comentario
-```
-
-#### Comentarios multilínea
-
-**Sintaxis:**
-```java
-//* <comentario_multilinea> *//
-```
-
-**Ejemplo:**
-```java
-//* 
-// Esto es un comentario multilínea
-//*
-```
-
-También pueden contener instrucciones que serán ignoradas por el intérprete:
-
-```java
-//* <declaración_de_variable/print> *//
-```
-
-**Ejemplo:**
-```java
-//* 
-// int x = 8
-// print(x)
-//*
-```
+Intérprete de un subconjunto de Java implementado en Python con sly. Procesa ficheros `.txt` con código Java simplificado: declara variables enteras, realiza operaciones aritméticas, evalúa condiciones y muestra resultados por consola.
 
 ---
 
-## Cosas que NO se pueden hacer
+### Cómo se relacionan los módulos
 
-### Declaración de variables con operaciones
+```
+fichero.txt
+ lexer.py          Convierte el texto en tokens (palabras del lenguaje)
+ parser.py         Construye el AST (árbol sintáctico abstracto)
+ interprete.py     Recorre el AST y ejecuta cada nodo
+ salida por consola
+```
+---
 
-No se permite realizar operaciones en la asignación.
+## Cómo ejecutar
 
-**Sintaxis:**
-```text
-<tipo> <id> = <operación> ;
+### Ejecución básica
+
+```bash
+python main.py <fichero.txt>
 ```
 
-**Ejemplos NO válidos:**
+### Ejecución mostrando el árbol AST
+
+```bash
+python main.py <fichero.txt> --ast
+```
+
+### Ejemplos con los ficheros de prueba
+
+```bash
+python main.py test_basico.txt
+python main.py test_basico.txt --ast
+
+python main.py test_negativos.txt
+python main.py test_negativos.txt --ast
+
+python main.py test_condicionales.txt
+python main.py test_condicionales.txt --ast
+
+python main.py test_operaciones.txt
+python main.py test_operaciones.txt --ast
+
+python main.py test_comentarios.txt
+python main.py test_complejo.txt
+```
+
+### Ejecutar todos los tests seguidos
+
+---
+
+## Sintaxis del lenguaje
+
+### Declaración de variables
+
+Solo se admite el tipo `int`. Toda variable debe declararse con valor inicial.
+
 ```java
-int x = 2 + 4;
-int x = x + y;
-int x = y + z;
+int x = 5;
+int resultado = x * 2;
+int negativo = -3;
 ```
 
-### Declaración sin asignación
+### Reasignación
 
-No se permite declarar variables sin inicializarlas.
+Una vez declarada, la variable puede reasignarse sin indicar el tipo.
 
-**Sintaxis:**
-```text
-<tipo> <id> ;
-```
-
-**Ejemplo NO válido:**
 ```java
-int z;
+x = 10;
+x = x + 1;
 ```
 
-### Comentarios multilínea mal cerrados
+### Operaciones aritméticas
 
-**Ejemplo NO válido:**
+| Operador | Descripción         |
+|----------|---------------------|
+| `+`      | Suma                |
+| `-`      | Resta               |
+| `*`      | Multiplicación      |
+| `/`      | División entera     |
+| `-expr`  | Negación unaria     |
+
+Se respeta la precedencia estándar. Se pueden usar paréntesis.
+
 ```java
-//* 
-// <declaración_de_variable> 
-*//
+int a = (3 + 2) * -4;
+int b = 10 / 3;        // resultado: 3 (división entera)
 ```
+
+### Print
+
+Imprime por consola el valor de una expresión.
+
+```java
+print(x);
+print(x + 1);
+print(-x);
+```
+
+### Condicionales
+
+Se admite `if` con o sin `else`. La condición debe ir entre paréntesis y el cuerpo entre llaves.
+
+```java
+if (x > 0) {
+    print(x);
+}
+
+if (x == y) {
+    print(1);
+} else {
+    print(0);
+}
+```
+
+#### Operadores de comparación
+
+| Operador | Significado       |
+|----------|-------------------|
+| `==`     | Igual             |
+| `!=`     | Distinto          |
+| `<`      | Menor que         |
+| `>`      | Mayor que         |
+| `<=`     | Menor o igual     |
+| `>=`     | Mayor o igual     |
+
+### Comentarios
+
+**Una línea:**
+```java
+// Esto es un comentario
+```
+
+**Multilínea:**
+```java
+/*
+   Esto es un comentario
+   que ocupa varias líneas
+*/
+```
+
+El contenido de los comentarios es completamente ignorado por el intérprete.
+
+---
+
+## Limitaciones conocidas
+
+- **Solo entero:** 
+- **No hay bucles**
+- **No hay funciones**
+- **If sin llaves no válido** `if (x > 0) print(x);` no es sintaxis válida.
+- **Variable no declarada no da error** si se usa una variable que no existe, el intérprete devuelve `0`.
+- **Declaración sin valor inicial no válida** 
+

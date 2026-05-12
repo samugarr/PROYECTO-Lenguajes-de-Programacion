@@ -1,4 +1,6 @@
-class Interpreter:
+from .condicionales import Condicionales
+
+class Interpreter(Condicionales):
     def __init__(self):
         self.vars = {}
 
@@ -8,6 +10,10 @@ class Interpreter:
 
         if node[0] == 'var':
             return self.vars.get(node[1], 0)
+
+        # Unary minus: nodo de un solo hijo
+        if node[0] == 'neg':
+            return -self.eval(node[1])
 
         op, a, b = node
         a = self.eval(a)
@@ -21,9 +27,8 @@ class Interpreter:
     def run(self, program):
         for stmt in program:
             if not isinstance(stmt, tuple):
-                continue   # ignora cosas que no sean sentencias
+                continue
             self.exec(stmt)
-
 
     def exec(self, stmt):
         if stmt[0] == 'decl':
@@ -35,15 +40,33 @@ class Interpreter:
         elif stmt[0] == 'print':
             print(self.eval(stmt[1]))
 
+        elif stmt[0] == 'if':
+            self.exec_if(stmt)
+
         else:
-            return   # ignora cualquier cosa rara
+            return  # ignora cualquier cosa rara
+
 
 def print_ast(node, indent=0):
+    prefix = "  " * indent
+
     if isinstance(node, int):
-        print("  " * indent + str(node))
+        print(prefix + str(node))
         return
 
     if isinstance(node, tuple):
-        print("  " * indent + str(node[0]))
+        # Nodo unario (neg)
+        if len(node) == 2 and node[0] == 'neg':
+            print(prefix + 'neg')
+            print_ast(node[1], indent + 1)
+            return
+
+        print(prefix + str(node[0]))
         for child in node[1:]:
-            print_ast(child, indent + 1)
+            if child is None:
+                print(prefix + "  (sin else)")
+            elif isinstance(child, list):
+                for item in child:
+                    print_ast(item, indent + 1)
+            else:
+                print_ast(child, indent + 1)

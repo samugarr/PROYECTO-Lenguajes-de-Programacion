@@ -1,0 +1,25 @@
+// Test numeros negativos
+
+// Declaracion con valor negativo directo
+int a = -5;
+print(a);
+
+// Operaciones con negativos
+int b = -3 + 10;
+print(b);
+
+int c = -2 * -4;
+print(c);
+
+// Negativo como resultado de operacion
+int d = 3 - 10;
+print(d);
+
+// Unary minus sobre variable
+int e = 7;
+int f = -e;
+print(f);
+
+// Expresion mixta
+int g = (-3 + 1) * 2;
+print(g);

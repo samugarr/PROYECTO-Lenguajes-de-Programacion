@@ -1,0 +1,15 @@
+// Este comentario no afecta al programa
+int a = 7;
+
+/*
+   Comentario multilinea.
+   int b = 999;
+   print(b);
+   Todo esto se ignora.
+*/
+
+print(a);
+
+// a = 0; esto tampoco se ejecuta
+int b = 3; 
+print(b);

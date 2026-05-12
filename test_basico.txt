@@ -1,0 +1,10 @@
+// Test basico: declaracion, reasignacion e impresion
+int a = 5;
+int b = 3;
+print(a);
+print(b);
+print(10);
+
+// Reasignacion simple
+a = 99;
+print(a);

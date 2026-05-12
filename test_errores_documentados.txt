@@ -1,0 +1,23 @@
+// ARCHIVO DE ERRORES - Casos NO validos documentados
+
+// ERROR 1: declaracion sin inicializar -> error de parsing
+// int z;
+
+// ERROR 2: falta punto y coma -> error de parsing
+// int x = 5
+
+// ERROR 3: tipo no soportado (no hay strings) -> error de parsing
+// String s = "hola";
+
+// ERROR 4: variable no declarada -> imprime 0 silenciosamente (no da error)
+// print(noExiste);   <- devuelve 0, comportamiento a tener en cuenta
+
+// ERROR 5: if sin llaves -> no soportado, requiere bloque { }
+// if (x > 0) print(x);
+
+// ERROR 6: condicion con aritmetica en vez de comparacion -> error de parsing
+// if (x + 1) { print(x); }
+
+// Lo unico valido en este archivo:
+int a = 1;
+print(a);
